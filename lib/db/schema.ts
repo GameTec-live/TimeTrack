@@ -67,6 +67,7 @@ export const project = pgTable("project", {
     name: text().notNull(),
     description: text(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
+    bgColor: text().default("bg-purple-600 dark:bg-purple-700"),
     ownerId: text("owner_id")
         .notNull()
         .references(() => user.id, { onDelete: "cascade" }),
@@ -82,4 +83,15 @@ export const timeEntry = pgTable("time_entry", {
         .references(() => user.id, { onDelete: "cascade" }),
     startedAt: timestamp("started_at").defaultNow().notNull(),
     stoppedAt: timestamp("stopped_at"),
+});
+
+export const projectPin = pgTable("project_pin", {
+    id: uuid().primaryKey().defaultRandom(),
+    projectId: uuid()
+        .notNull()
+        .references(() => project.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+        .notNull()
+        .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
 });
