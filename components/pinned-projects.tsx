@@ -5,7 +5,7 @@ import ProjectMenu from "./projectmenu";
 
 export default function PinnedProjects({ pins }: { pins: ProjectPin[] }) {
     return (
-        <div>
+        <div className="m-4">
             <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400">
                 Pinned Projects
             </h2>
@@ -39,6 +39,9 @@ export default function PinnedProjects({ pins }: { pins: ProjectPin[] }) {
                             >
                                 <p className="font-medium text-gray-900 hover:text-gray-600 dark:text-white dark:hover:text-gray-200">
                                     {pin.name}
+                                </p>
+                                <p className="text-gray-500 dark:text-gray-400">
+                                    {pin.description}
                                 </p>
                             </Link>
                             <div className="shrink-0 pr-2">

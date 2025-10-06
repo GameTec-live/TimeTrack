@@ -67,12 +67,47 @@ export async function getProjectPins() {
         .select({
             id: project.id,
             name: project.name,
+            description: project.description,
             color: project.bgColor,
         })
         .from(projectPin)
         .where(eq(projectPin.userId, session.user.id))
         .innerJoin(project, eq(project.id, projectPin.projectId))
         .orderBy(desc(projectPin.createdAt));
+}
+
+export async function pinProject(projectId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    await db.insert(projectPin).values({
+        projectId,
+        userId: session.user.id,
+    });
+}
+
+export async function unpinProject(projectId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    await db
+        .delete(projectPin)
+        .where(
+            and(
+                eq(projectPin.projectId, projectId),
+                eq(projectPin.userId, session.user.id),
+            ),
+        );
 }
 
 export type GetProjectPinsQueryResult = Awaited<

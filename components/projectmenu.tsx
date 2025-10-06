@@ -14,7 +14,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { deleteProject } from "@/lib/db/queries/projects";
+import {
+    deleteProject,
+    pinProject,
+    unpinProject,
+} from "@/lib/db/queries/projects";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -30,6 +34,7 @@ export default function ProjectMenu({
 }) {
     const router = useRouter();
     const [isDeletePending, startDeleteTransition] = useTransition();
+    const [isPinPending, startPinTransition] = useTransition();
 
     const onDelete = async () => {
         startDeleteTransition(async () => {
@@ -40,6 +45,25 @@ export default function ProjectMenu({
             } catch (e) {
                 const msg =
                     e instanceof Error ? e.message : "Failed to delete project";
+                console.error(e);
+                toast.error(msg);
+            }
+        });
+    };
+
+    const onPin = async () => {
+        startPinTransition(async () => {
+            try {
+                if (pinned) {
+                    await unpinProject(projectId);
+                } else {
+                    await pinProject(projectId);
+                }
+                router.refresh();
+                toast.success(pinned ? "Project unpinned" : "Project pinned");
+            } catch (e) {
+                const msg =
+                    e instanceof Error ? e.message : "Failed to pin project";
                 console.error(e);
                 toast.error(msg);
             }
@@ -62,7 +86,7 @@ export default function ProjectMenu({
                     </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem disabled={isPinPending} onSelect={onPin}>
                         {pinned ? (
                             <PinOff className="mr-0.5" />
                         ) : (

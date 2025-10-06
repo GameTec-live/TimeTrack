@@ -1,6 +1,11 @@
-import { describe } from "node:test";
-import { boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { start } from "repl";
+import {
+    boolean,
+    pgTable,
+    primaryKey,
+    text,
+    timestamp,
+    uuid,
+} from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
     id: text("id").primaryKey(),
@@ -85,13 +90,16 @@ export const timeEntry = pgTable("time_entry", {
     stoppedAt: timestamp("stopped_at"),
 });
 
-export const projectPin = pgTable("project_pin", {
-    id: uuid().primaryKey().defaultRandom(),
-    projectId: uuid()
-        .notNull()
-        .references(() => project.id, { onDelete: "cascade" }),
-    userId: text("user_id")
-        .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+export const projectPin = pgTable(
+    "project_pin",
+    {
+        projectId: uuid()
+            .notNull()
+            .references(() => project.id, { onDelete: "cascade" }),
+        userId: text("user_id")
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
+        createdAt: timestamp("created_at").defaultNow().notNull(),
+    },
+    (table) => [primaryKey({ columns: [table.projectId, table.userId] })],
+);

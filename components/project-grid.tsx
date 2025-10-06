@@ -6,6 +6,9 @@ import ProjectMenu from "./projectmenu";
 export default function Projects({ projects }: { projects: Project[] }) {
     return (
         <div className="m-4">
+            <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                All Projects
+            </h2>
             <ul className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
                 {projects.map((project) => (
                     <li
