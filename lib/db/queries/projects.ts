@@ -14,11 +14,21 @@ export async function getProjects() {
         throw new Error("No session found");
     }
 
-    return await db
+    // Get all projects of the user
+    const projects = await db
         .select()
         .from(project)
         .where(eq(project.ownerId, session.user.id))
         .orderBy(desc(project.createdAt));
+
+    // Get pinned project ids
+    const pinned = await db
+        .select({ projectId: projectPin.projectId })
+        .from(projectPin)
+        .where(eq(projectPin.userId, session.user.id));
+
+    const pinnedSet = new Set(pinned.map((p) => p.projectId));
+    return projects.map((p) => ({ ...p, pinned: pinnedSet.has(p.id) }));
 }
 
 export async function deleteProject(projectId: string) {
@@ -54,28 +64,6 @@ export async function deleteProject(projectId: string) {
         );
 }
 
-export async function getProjectPins() {
-    const session = await auth.api.getSession({
-        headers: await headers(),
-    });
-
-    if (!session) {
-        throw new Error("No session found");
-    }
-
-    return await db
-        .select({
-            id: project.id,
-            name: project.name,
-            description: project.description,
-            color: project.bgColor,
-        })
-        .from(projectPin)
-        .where(eq(projectPin.userId, session.user.id))
-        .innerJoin(project, eq(project.id, projectPin.projectId))
-        .orderBy(desc(projectPin.createdAt));
-}
-
 export async function pinProject(projectId: string) {
     const session = await auth.api.getSession({
         headers: await headers(),
@@ -109,11 +97,6 @@ export async function unpinProject(projectId: string) {
             ),
         );
 }
-
-export type GetProjectPinsQueryResult = Awaited<
-    ReturnType<typeof getProjectPins>
->;
-export type ProjectPin = GetProjectPinsQueryResult[number];
 
 export type GetProjectQueryResult = Awaited<ReturnType<typeof getProjects>>;
 export type Project = GetProjectQueryResult[number];
