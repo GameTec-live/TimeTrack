@@ -36,20 +36,22 @@ export default function NavBar() {
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="flex shrink-0 items-center">
-                            <Image
-                                alt="Your Company"
-                                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                                className="h-8 w-auto dark:hidden"
-                                width={32}
-                                height={32}
-                            />
-                            <Image
-                                alt="Your Company"
-                                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                                className="h-8 w-auto not-dark:hidden"
-                                width={32}
-                                height={32}
-                            />
+                            <Link href="/">
+                                <Image
+                                    alt="Your Company"
+                                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                                    className="h-8 w-auto dark:hidden"
+                                    width={32}
+                                    height={32}
+                                />
+                                <Image
+                                    alt="Your Company"
+                                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+                                    className="h-8 w-auto not-dark:hidden"
+                                    width={32}
+                                    height={32}
+                                />
+                            </Link>
                         </div>
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                             {/* Current: "border-indigo-600 dark:border-indigo-500 text-gray-900 dark:text-white", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-300 dark:hover:border-white/20 dark:hover:text-white" */}

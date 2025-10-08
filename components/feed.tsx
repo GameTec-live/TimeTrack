@@ -51,7 +51,7 @@ export default function Feed({ entries }: { entries: TimeEntry[] }) {
                                         {entryItem.startedAt.toLocaleDateString()}
                                     </time>
                                 </div>
-                                <p className="text-sm/6 text-gray-500 dark:text-gray-400 break-words text-wrap max-w-lg">
+                                <p className="text-sm/6 text-gray-500 dark:text-gray-400 break-words text-wrap lg:max-w-lg max-w-[80vw]">
                                     {entryItem.note}
                                 </p>
                             </div>

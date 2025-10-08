@@ -44,25 +44,27 @@ export default async function ProjectPage({
                 </CardHeader>
                 <CardContent className="flex flex-col gap-2 w-full items-center justify-center">
                     {runningEntry?.startedAt ? (
-                        <>
-                            <h1 className="text-4xl font-bold">
-                                {FormatTime(
-                                    Date.now() -
-                                        runningEntry.startedAt.getTime(),
-                                )}
-                            </h1>
-                            <p className="text-muted-foreground text-xs">
-                                {runningEntry.startedAt.toLocaleString()}
-                            </p>
-                        </>
+                        <h1 className="text-4xl font-bold">
+                            {FormatTime(
+                                Date.now() - runningEntry.startedAt.getTime(),
+                            )}
+                        </h1>
                     ) : (
                         <h1 className="text-4xl font-bold">
                             {FormatTime(totalPersonalTime)}
                         </h1>
                     )}
-                    <p className="text-muted-foreground text-sm">
-                        {FormatTime(totalSharedTime)} total time
-                    </p>
+                    <div className="flex flex-col md:flex-row items-center justify-center">
+                        {runningEntry?.startedAt && (
+                            <p className="text-muted-foreground text-sm mr-4">
+                                Started{" "}
+                                {runningEntry.startedAt.toLocaleString()}
+                            </p>
+                        )}
+                        <p className="text-muted-foreground text-sm">
+                            {FormatTime(totalSharedTime)} total time
+                        </p>
+                    </div>
                 </CardContent>
                 <CardFooter className="flex justify-center">
                     <CardAction className="flex flex-col items-center gap-2 w-full">
