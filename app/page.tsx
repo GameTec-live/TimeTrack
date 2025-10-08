@@ -31,7 +31,7 @@ export default async function Home() {
                 <Link href="/projects/new">
                     <button
                         type="button"
-                        className="rounded-full bg-indigo-600 p-2 text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500 absolute bottom-4 right-4 md:bottom-8 md:right-8"
+                        className="fixed rounded-full bg-blue-600 p-2 text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:bg-blue-500 dark:shadow-none dark:hover:bg-blue-400 dark:focus-visible:outline-blue-500 bottom-4 right-4 md:bottom-8 md:right-8"
                     >
                         <PlusIcon
                             aria-hidden="true"

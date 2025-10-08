@@ -5,7 +5,7 @@ export default function NoProjects() {
         <div className="mt-10 flex flex-col items-center justify-center text-center mx-2">
             <Link
                 href="/projects/new"
-                className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 dark:border-white/15 dark:hover:border-white/25 dark:focus:outline-indigo-500 max-w-lg"
+                className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-blue-600 dark:border-white/15 dark:hover:border-white/25 dark:focus:outline-blue-500 max-w-lg"
             >
                 <svg
                     fill="none"

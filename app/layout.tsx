@@ -36,6 +36,16 @@ export default function RootLayout({
                     disableTransitionOnChange
                 >
                     {children}
+                    <p className="text-center text-xs text-muted-foreground fixed bottom-4 left-0 right-0">
+                        TimeTrack AGPLV3 Licensed -{" "}
+                        <a
+                            href="https://github.com/GameTec-live/TimeTrack"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Learn More
+                        </a>
+                    </p>
                     <Toaster />
                 </ThemeProvider>
             </body>

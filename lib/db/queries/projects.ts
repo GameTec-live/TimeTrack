@@ -118,5 +118,35 @@ export async function unpinProject(projectId: string) {
         );
 }
 
+export async function createProject(
+    name: string,
+    description: string | null | undefined,
+    color: string | null | undefined,
+) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    const result = await db
+        .insert(project)
+        .values({
+            name,
+            description,
+            bgColor: color,
+            ownerId: session.user.id,
+        })
+        .returning();
+
+    if (!result) {
+        throw new Error("Failed to create project");
+    }
+
+    return result[0].id;
+}
+
 export type GetProjectQueryResult = Awaited<ReturnType<typeof getProjects>>;
 export type Project = GetProjectQueryResult[number];

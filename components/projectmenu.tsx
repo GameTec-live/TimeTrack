@@ -76,7 +76,7 @@ export default function ProjectMenu({
                 <DropdownMenuTrigger asChild>
                     <button
                         type="button"
-                        className="inline-flex size-8 items-center justify-center rounded-full text-gray-400 hover:text-gray-500 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 dark:hover:text-white dark:focus:outline-white"
+                        className="inline-flex size-8 items-center justify-center rounded-full text-gray-400 hover:text-gray-500 focus:outline-2 focus:outline-offset-2 focus:outline-blue-600 dark:hover:text-white dark:focus:outline-white"
                     >
                         <span className="sr-only">Open options</span>
                         <EllipsisVertical
