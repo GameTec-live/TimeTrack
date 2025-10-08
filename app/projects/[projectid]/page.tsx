@@ -76,7 +76,31 @@ export default async function ProjectPage({
                     </CardAction>
                 </CardFooter>
             </Card>
-            <Feed entries={data} />
+            {data.length === 0 ? (
+                <div className="text-center mt-4">
+                    <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        className="mx-auto size-12 text-gray-400 dark:text-gray-500"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                    </svg>
+                    <h3 className="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
+                        No entries yet
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        Get started by pressing the button above.
+                    </p>
+                </div>
+            ) : (
+                <Feed entries={data} />
+            )}
         </main>
     );
 }

@@ -10,7 +10,7 @@ export default function Hero() {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-900">
+        <div className="bg-white dark:bg-gray-900 h-dvh">
             <div className="relative isolate px-6 pt-14 lg:px-8">
                 <div
                     aria-hidden="true"
