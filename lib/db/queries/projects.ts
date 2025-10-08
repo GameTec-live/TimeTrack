@@ -31,6 +31,26 @@ export async function getProjects() {
     return projects.map((p) => ({ ...p, pinned: pinnedSet.has(p.id) }));
 }
 
+export async function getProjectById(projectId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    return await db
+        .select()
+        .from(project)
+        .where(
+            and(
+                eq(project.id, projectId),
+                eq(project.ownerId, session.user.id),
+            ),
+        );
+}
+
 export async function deleteProject(projectId: string) {
     const session = await auth.api.getSession({
         headers: await headers(),
