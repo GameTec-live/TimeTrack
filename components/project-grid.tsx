@@ -13,7 +13,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
                         Pinned Projects
                     </h2>
                     <ProjectsGrid projects={pinnedProjects} />
-                    <Separator />
+                    <Separator className="my-4" />
                 </>
             )}
             <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400">

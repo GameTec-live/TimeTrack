@@ -88,6 +88,7 @@ export const timeEntry = pgTable("time_entry", {
         .references(() => user.id, { onDelete: "cascade" }),
     startedAt: timestamp("started_at").defaultNow().notNull(),
     stoppedAt: timestamp("stopped_at"),
+    note: text("note"),
 });
 
 export const projectPin = pgTable(
