@@ -25,6 +25,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
                                           word.charAt(0).toUpperCase(),
                                       )
                                       .join("")
+                                      .slice(0, 2)
                                 : project.name.slice(0, 2).toUpperCase()
                             : project.name.charAt(0).toUpperCase()}
                     </div>
