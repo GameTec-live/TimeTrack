@@ -28,7 +28,7 @@ export default async function Home() {
                 ) : (
                     <NoProjects />
                 )}
-                <Link href="/projects/new">
+                <Link href="/projects/new" prefetch>
                     <button
                         type="button"
                         className="fixed rounded-full bg-blue-600 p-2 text-white shadow-xs hover:bg-blue-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:bg-blue-500 dark:shadow-none dark:hover:bg-blue-400 dark:focus-visible:outline-blue-500 bottom-4 right-4 md:bottom-8 md:right-8"

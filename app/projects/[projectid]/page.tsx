@@ -28,6 +28,14 @@ export default async function ProjectPage({
 
     const { projectid } = await params;
 
+    // validate projectid
+    if (
+        !/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.test(
+            projectid,
+        )
+    )
+        return notFound();
+
     const projects = await getProjectById(projectid);
     if (projects.length === 0) return notFound();
     const project = projects[0];

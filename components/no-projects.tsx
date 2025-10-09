@@ -6,6 +6,7 @@ export default function NoProjects() {
             <Link
                 href="/projects/new"
                 className="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-blue-600 dark:border-white/15 dark:hover:border-white/25 dark:focus:outline-blue-500 max-w-lg"
+                prefetch
             >
                 <svg
                     fill="none"

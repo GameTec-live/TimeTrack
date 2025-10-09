@@ -37,9 +37,9 @@ export default function NavBar() {
                     </div>
                     <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="flex shrink-0 items-center">
-                            <Link href="/">
+                            <Link href="/" prefetch>
                                 <Image
-                                    alt="Your Company"
+                                    alt="TimeTrack Logo"
                                     src={logo}
                                     className="h-8 w-auto dark:invert"
                                     width={32}
@@ -50,6 +50,7 @@ export default function NavBar() {
                         <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                             {/* Current: "border-blue-600 dark:border-blue-500 text-gray-900 dark:text-white", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-300 dark:hover:border-white/20 dark:hover:text-white" */}
                             <Link
+                                prefetch
                                 href="/"
                                 className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${
                                     activeIndex === 0
@@ -74,6 +75,7 @@ export default function NavBar() {
                     <DisclosureButton
                         as={Link}
                         href="/"
+                        prefetch
                         className={
                             activeIndex === 0
                                 ? "bg-blue-50 border-blue-600 text-blue-700 dark:border-blue-500 dark:bg-blue-600/10 dark:text-blue-400"
