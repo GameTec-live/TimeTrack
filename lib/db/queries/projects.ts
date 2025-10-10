@@ -3,7 +3,7 @@ import { and, desc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { db } from "@/lib";
 import { auth } from "@/lib/auth";
-import { project, projectPin } from "../schema";
+import { project, projectPin, timeEntry, user } from "../schema";
 
 export async function getProjects() {
     const session = await auth.api.getSession({
@@ -146,6 +146,68 @@ export async function createProject(
     }
 
     return result[0].id;
+}
+
+export async function exportProjectCSV(projectId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    const projectToExport = await db
+        .select()
+        .from(project)
+        .where(eq(project.id, projectId));
+
+    if (!projectToExport || projectToExport.length === 0) {
+        throw new Error("Project not found");
+    }
+
+    if (projectToExport[0].ownerId !== session.user.id) {
+        throw new Error("You do not have permission to export this project");
+    }
+
+    const timeData = await db
+        .select({
+            id: timeEntry.id,
+            projectId: timeEntry.projectId,
+            userId: timeEntry.userId,
+            userName: user.name,
+            startedAt: timeEntry.startedAt,
+            stoppedAt: timeEntry.stoppedAt,
+            note: timeEntry.note,
+        })
+        .from(timeEntry)
+        .where(eq(timeEntry.projectId, projectId))
+        .leftJoin(user, eq(timeEntry.userId, user.id));
+
+    const csv = [
+        [
+            "id",
+            "projectId",
+            "userId",
+            "userName",
+            "startedAt",
+            "stoppedAt",
+            "note",
+        ].join(","),
+        ...timeData.map((entry) =>
+            [
+                entry.id,
+                entry.projectId,
+                entry.userId,
+                `"${entry.userName ?? "Unknown"}"`,
+                entry.startedAt.toISOString(),
+                entry.stoppedAt ? entry.stoppedAt.toISOString() : "",
+                `"${(entry.note ?? "").replace(/"/g, '""')}"`,
+            ].join(","),
+        ),
+    ].join("\n");
+
+    return Buffer.from(csv).toString("base64");
 }
 
 export type GetProjectQueryResult = Awaited<ReturnType<typeof getProjects>>;

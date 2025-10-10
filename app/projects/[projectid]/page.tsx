@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
+import { CSVButton } from "@/components/csv-button";
 import Feed from "@/components/feed";
 import StartStopButton from "@/components/startstop-button";
 import {
@@ -47,9 +48,20 @@ export default async function ProjectPage({
         <main className="flex flex-col items-center m-4">
             <Card className="max-w-lg w-full">
                 <CardHeader>
-                    <CardTitle>{project.name}</CardTitle>
-                    <CardDescription>{project.description}</CardDescription>
+                    <div className="flex items-start justify-between gap-4">
+                        <div>
+                            <CardTitle>{project.name}</CardTitle>
+                            <CardDescription>
+                                {project.description}
+                            </CardDescription>
+                        </div>
+                        <CSVButton
+                            projectId={projectid}
+                            projectName={project.name}
+                        />
+                    </div>
                 </CardHeader>
+
                 <CardContent className="flex flex-col gap-2 w-full items-center justify-center">
                     {runningEntry?.startedAt ? (
                         <h1 className="text-4xl font-bold">
