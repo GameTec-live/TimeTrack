@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { ExportButton } from "@/components/export-button";
 import Feed from "@/components/feed";
+import LiveTimer from "@/components/live-timer";
 import StartStopButton from "@/components/startstop-button";
 import {
     Card,
@@ -65,9 +66,13 @@ export default async function ProjectPage({
                 <CardContent className="flex flex-col gap-2 w-full items-center justify-center">
                     {runningEntry?.startedAt ? (
                         <h1 className="text-4xl font-bold">
-                            {FormatTime(
-                                Date.now() - runningEntry.startedAt.getTime(),
-                            )}
+                            <LiveTimer
+                                startedAtMs={runningEntry.startedAt.getTime()}
+                                initialElapsedMs={
+                                    Date.now() -
+                                    runningEntry.startedAt.getTime()
+                                }
+                            />
                         </h1>
                     ) : (
                         <h1 className="text-4xl font-bold">
