@@ -1,5 +1,11 @@
 "use client";
 
+import { formatDuration, intervalToDuration } from "date-fns";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { TimeEntry } from "@/lib/db/queries/timeEntries";
 import { cn } from "@/lib/utils";
 import FeedItemMenu from "./feed-item-menu";
@@ -37,14 +43,29 @@ export default function Feed({ entries }: { entries: TimeEntry[] }) {
                             </Avatar>
                             <div className="flex-auto rounded-md p-3 ring-1 ring-gray-200 ring-inset dark:ring-white/15">
                                 <div className="flex justify-between gap-x-4">
-                                    <p className="flex-auto py-0.5 text-xs/5 text-gray-500 dark:text-gray-400">
-                                        <span className="font-medium text-gray-900 dark:text-white">
-                                            {entryItem.userName}
-                                        </span>{" "}
-                                        {entryItem.startedAt.toLocaleTimeString()}{" "}
-                                        -{" "}
-                                        {entryItem.stoppedAt?.toLocaleTimeString()}
-                                    </p>
+                                    <Tooltip>
+                                        <p className="flex-auto py-0.5 text-xs/5 text-gray-500 dark:text-gray-400">
+                                            <span className="font-medium text-gray-900 dark:text-white">
+                                                {entryItem.userName}
+                                            </span>{" "}
+                                            <TooltipTrigger>
+                                                {entryItem.startedAt.toLocaleTimeString()}{" "}
+                                                -{" "}
+                                                {entryItem.stoppedAt?.toLocaleTimeString()}
+                                            </TooltipTrigger>
+                                        </p>
+                                        <TooltipContent>
+                                            {formatDuration(
+                                                intervalToDuration({
+                                                    start: entryItem.startedAt,
+                                                    end:
+                                                        entryItem.stoppedAt ??
+                                                        new Date(),
+                                                }),
+                                            )}
+                                        </TooltipContent>
+                                    </Tooltip>
+
                                     <div className="flex flex-row gap-2">
                                         <time
                                             dateTime={entryItem.startedAt.toISOString()}
@@ -65,13 +86,28 @@ export default function Feed({ entries }: { entries: TimeEntry[] }) {
                             <div className="relative flex size-6 flex-none items-center justify-center bg-white dark:bg-gray-900">
                                 <div className="size-1.5 rounded-full bg-gray-100 ring ring-gray-300 dark:bg-white/10 dark:ring-white/20" />
                             </div>
-                            <p className="flex-auto py-0.5 text-xs/5 text-gray-500 dark:text-gray-400">
-                                <span className="font-medium text-gray-900 dark:text-white">
-                                    {entryItem.userName}
-                                </span>{" "}
-                                {entryItem.startedAt.toLocaleTimeString()} -{" "}
-                                {entryItem.stoppedAt?.toLocaleTimeString()}
-                            </p>
+                            <Tooltip>
+                                <p className="flex-auto py-0.5 text-xs/5 text-gray-500 dark:text-gray-400">
+                                    <span className="font-medium text-gray-900 dark:text-white">
+                                        {entryItem.userName}
+                                    </span>{" "}
+                                    <TooltipTrigger>
+                                        {entryItem.startedAt.toLocaleTimeString()}{" "}
+                                        -{" "}
+                                        {entryItem.stoppedAt?.toLocaleTimeString()}
+                                    </TooltipTrigger>
+                                </p>
+                                <TooltipContent>
+                                    {formatDuration(
+                                        intervalToDuration({
+                                            start: entryItem.startedAt,
+                                            end:
+                                                entryItem.stoppedAt ??
+                                                new Date(),
+                                        }),
+                                    )}
+                                </TooltipContent>
+                            </Tooltip>
                             <div className="flex flex-row gap-2">
                                 <time
                                     dateTime={entryItem.startedAt.toISOString()}

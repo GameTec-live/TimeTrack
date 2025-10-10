@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
-import { CSVButton } from "@/components/csv-button";
+import { ExportButton } from "@/components/export-button";
 import Feed from "@/components/feed";
 import StartStopButton from "@/components/startstop-button";
 import {
@@ -55,7 +55,7 @@ export default async function ProjectPage({
                                 {project.description}
                             </CardDescription>
                         </div>
-                        <CSVButton
+                        <ExportButton
                             projectId={projectid}
                             projectName={project.name}
                         />

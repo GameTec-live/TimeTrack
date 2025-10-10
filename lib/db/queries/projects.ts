@@ -1,8 +1,10 @@
 "use server";
+import { formatDuration, intervalToDuration } from "date-fns";
 import { and, desc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { db } from "@/lib";
 import { auth } from "@/lib/auth";
+import { generatePDF } from "@/lib/pdfgen";
 import { project, projectPin, timeEntry, user } from "../schema";
 
 export async function getProjects() {
@@ -208,6 +210,99 @@ export async function exportProjectCSV(projectId: string) {
     ].join("\n");
 
     return Buffer.from(csv).toString("base64");
+}
+
+export async function exportProjectCSVSimple(projectId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    const projectToExport = await db
+        .select()
+        .from(project)
+        .where(eq(project.id, projectId));
+
+    if (!projectToExport || projectToExport.length === 0) {
+        throw new Error("Project not found");
+    }
+
+    if (projectToExport[0].ownerId !== session.user.id) {
+        throw new Error("You do not have permission to export this project");
+    }
+
+    const timeData = await db
+        .select({
+            userName: user.name,
+            startedAt: timeEntry.startedAt,
+            stoppedAt: timeEntry.stoppedAt,
+            note: timeEntry.note,
+        })
+        .from(timeEntry)
+        .where(eq(timeEntry.projectId, projectId))
+        .leftJoin(user, eq(timeEntry.userId, user.id));
+
+    const csv = [
+        ["userName", "startedAt", "stoppedAt", "duration", "note"].join(";"),
+        ...timeData.map((entry) =>
+            [
+                `"${entry.userName ?? "Unknown"}"`,
+                entry.startedAt.toLocaleString(),
+                entry.stoppedAt ? entry.stoppedAt.toLocaleString() : "",
+                formatDuration(
+                    intervalToDuration({
+                        start: entry.startedAt,
+                        end: entry.stoppedAt ?? new Date(),
+                    }),
+                ),
+                `"${(entry.note ?? "").replace(/"/g, '""')}"`,
+            ].join(";"),
+        ),
+    ].join("\n");
+
+    const csvWithBOM = `\uFEFF${csv}`;
+    return Buffer.from(csvWithBOM, "utf8").toString("base64");
+}
+
+export async function exportProjectPDF(projectId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    const projectToExport = await db
+        .select()
+        .from(project)
+        .where(eq(project.id, projectId));
+
+    if (!projectToExport || projectToExport.length === 0) {
+        throw new Error("Project not found");
+    }
+
+    if (projectToExport[0].ownerId !== session.user.id) {
+        throw new Error("You do not have permission to export this project");
+    }
+
+    const timeData = await db
+        .select({
+            userName: user.name,
+            startedAt: timeEntry.startedAt,
+            stoppedAt: timeEntry.stoppedAt,
+            note: timeEntry.note,
+        })
+        .from(timeEntry)
+        .where(eq(timeEntry.projectId, projectId))
+        .leftJoin(user, eq(timeEntry.userId, user.id));
+
+    const pdf = await generatePDF(timeData);
+
+    return Buffer.from(pdf).toString("base64");
 }
 
 export type GetProjectQueryResult = Awaited<ReturnType<typeof getProjects>>;

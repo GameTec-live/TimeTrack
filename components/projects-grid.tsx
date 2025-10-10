@@ -46,6 +46,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
                             <ProjectMenu
                                 projectId={project.id}
                                 pinned={project.pinned}
+                                name={project.name}
                             />
                         </div>
                     </div>
