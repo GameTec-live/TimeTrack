@@ -133,6 +133,82 @@ export async function stopTime(
         .where(eq(timeEntry.id, entry.id));
 }
 
+export async function deleteEntry(entryId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    // Check permission
+    const entryToDelete = await db
+        .select()
+        .from(timeEntry)
+        .where(eq(timeEntry.id, entryId));
+
+    if (!entryToDelete || entryToDelete.length === 0) {
+        throw new Error("Entry not found");
+    }
+
+    if (entryToDelete[0].userId !== session.user.id) {
+        throw new Error("You do not have permission to delete this entry");
+    }
+
+    await db
+        .delete(timeEntry)
+        .where(
+            and(
+                eq(timeEntry.id, entryId),
+                eq(timeEntry.userId, session.user.id),
+            ),
+        );
+}
+
+export async function editEntry(
+    entryId: string,
+    startedAt: Date,
+    stoppedAt: Date | null,
+    note: string | null | undefined,
+) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        throw new Error("No session found");
+    }
+
+    // Check permission
+    const entryToEdit = await db
+        .select()
+        .from(timeEntry)
+        .where(eq(timeEntry.id, entryId));
+
+    if (!entryToEdit || entryToEdit.length === 0) {
+        throw new Error("Entry not found");
+    }
+
+    if (entryToEdit[0].userId !== session.user.id) {
+        throw new Error("You do not have permission to edit this entry");
+    }
+
+    await db
+        .update(timeEntry)
+        .set({
+            startedAt,
+            stoppedAt,
+            note,
+        })
+        .where(
+            and(
+                eq(timeEntry.id, entryId),
+                eq(timeEntry.userId, session.user.id),
+            ),
+        );
+}
+
 export type GetTimeEntriesByProjectIdQueryResult = Awaited<
     ReturnType<typeof getTimeEntriesByProjectId>
 >;

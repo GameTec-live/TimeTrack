@@ -2,6 +2,7 @@
 
 import type { TimeEntry } from "@/lib/db/queries/timeEntries";
 import { cn } from "@/lib/utils";
+import FeedItemMenu from "./feed-item-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export default function Feed({ entries }: { entries: TimeEntry[] }) {
@@ -44,12 +45,15 @@ export default function Feed({ entries }: { entries: TimeEntry[] }) {
                                         -{" "}
                                         {entryItem.stoppedAt?.toLocaleTimeString()}
                                     </p>
-                                    <time
-                                        dateTime={entryItem.startedAt.toISOString()}
-                                        className="flex-none py-0.5 text-xs/5 text-gray-500 dark:text-gray-400"
-                                    >
-                                        {entryItem.startedAt.toLocaleDateString()}
-                                    </time>
+                                    <div className="flex flex-row gap-2">
+                                        <time
+                                            dateTime={entryItem.startedAt.toISOString()}
+                                            className="flex-none py-0.5 text-xs/5 text-gray-500 dark:text-gray-400"
+                                        >
+                                            {entryItem.startedAt.toLocaleDateString()}
+                                        </time>
+                                        <FeedItemMenu entry={entryItem} />
+                                    </div>
                                 </div>
                                 <p className="text-sm/6 text-gray-500 dark:text-gray-400 break-words text-wrap lg:max-w-lg max-w-[80vw]">
                                     {entryItem.note}
@@ -68,12 +72,15 @@ export default function Feed({ entries }: { entries: TimeEntry[] }) {
                                 {entryItem.startedAt.toLocaleTimeString()} -{" "}
                                 {entryItem.stoppedAt?.toLocaleTimeString()}
                             </p>
-                            <time
-                                dateTime={entryItem.startedAt.toISOString()}
-                                className="flex-none py-0.5 text-xs/5 text-gray-500 dark:text-gray-400"
-                            >
-                                {entryItem.startedAt.toLocaleDateString()}
-                            </time>
+                            <div className="flex flex-row gap-2">
+                                <time
+                                    dateTime={entryItem.startedAt.toISOString()}
+                                    className="flex-none py-0.5 text-xs/5 text-gray-500 dark:text-gray-400"
+                                >
+                                    {entryItem.startedAt.toLocaleDateString()}
+                                </time>
+                                <FeedItemMenu entry={entryItem} />
+                            </div>
                         </>
                     )}
                 </li>

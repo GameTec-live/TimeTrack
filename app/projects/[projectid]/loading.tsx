@@ -28,9 +28,7 @@ export default function Loading() {
                     </h1>
 
                     <div className="flex flex-col md:flex-row items-center justify-center">
-                        <p className="text-muted-foreground text-sm">
-                            <Skeleton className="h-4 w-32" />
-                        </p>
+                        <Skeleton className="h-4 w-32" />
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-center">
