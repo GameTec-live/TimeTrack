@@ -15,6 +15,17 @@ export const auth = betterAuth({
             tenantId: "common",
             authority: "https://login.microsoftonline.com",
             prompt: "select_account",
+            enabled: Boolean(process.env.MICROSOFT_CLIENT_ID),
+        },
+        github: {
+            clientId: process.env.GITHUB_CLIENT_ID as string,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+            enabled: Boolean(process.env.GITHUB_CLIENT_ID),
+        },
+    },
+    account: {
+        accountLinking: {
+            enabled: true,
         },
     },
 });

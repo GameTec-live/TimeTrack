@@ -14,7 +14,7 @@ export default async function Home() {
     });
 
     if (!session) {
-        return <Hero />;
+        return <Hero useMS={Boolean(process.env.MICROSOFT_CLIENT_ID)} />;
     }
 
     const projects = await getProjects();

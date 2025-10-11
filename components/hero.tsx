@@ -2,10 +2,10 @@
 
 import { authClient } from "@/lib/auth-client";
 
-export default function Hero() {
+export default function Hero({ useMS }: { useMS: boolean }) {
     const signIn = async () => {
         await authClient.signIn.social({
-            provider: "microsoft",
+            provider: useMS ? "microsoft" : "github",
         });
     };
 

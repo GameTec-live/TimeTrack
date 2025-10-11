@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { authClient } from "@/lib/auth-client";
 
-export function ProfileMenu() {
+export function ProfileMenu({ useMS }: { useMS: boolean }) {
     const { data: session, isPending, error } = authClient.useSession();
     const router = useRouter();
 
@@ -21,7 +21,7 @@ export function ProfileMenu() {
 
     const signIn = async () => {
         await authClient.signIn.social({
-            provider: "microsoft",
+            provider: useMS ? "microsoft" : "github",
         });
     };
 
@@ -48,7 +48,7 @@ export function ProfileMenu() {
                             onClick={signIn}
                             type="button"
                         >
-                            Sign in using Microsoft
+                            Sign in using {useMS ? "Microsoft" : "GitHub"}
                         </button>
                     </MenuItem>
                 </MenuItems>

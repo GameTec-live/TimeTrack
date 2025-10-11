@@ -41,7 +41,7 @@ export function ExportButton({
                 toast.success("CSV downloaded");
             } catch (e) {
                 const msg =
-                    e instanceof Error ? e.message : "Failed to delete project";
+                    e instanceof Error ? e.message : "Failed to export project";
                 console.error(e);
                 toast.error(msg);
             }
@@ -61,7 +61,7 @@ export function ExportButton({
                 toast.success("CSV downloaded");
             } catch (e) {
                 const msg =
-                    e instanceof Error ? e.message : "Failed to delete project";
+                    e instanceof Error ? e.message : "Failed to export project";
                 console.error(e);
                 toast.error(msg);
             }
@@ -81,7 +81,7 @@ export function ExportButton({
                 toast.success("PDF downloaded");
             } catch (e) {
                 const msg =
-                    e instanceof Error ? e.message : "Failed to delete project";
+                    e instanceof Error ? e.message : "Failed to export project";
                 console.error(e);
                 toast.error(msg);
             }
