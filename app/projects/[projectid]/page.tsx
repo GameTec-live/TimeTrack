@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
+import ClientTime from "@/components/client-time";
 import { ExportButton } from "@/components/export-button";
 import Feed from "@/components/feed";
 import LiveTimer from "@/components/live-timer";
@@ -83,7 +84,7 @@ export default async function ProjectPage({
                         {runningEntry?.startedAt && (
                             <p className="text-muted-foreground text-sm mr-4">
                                 Started{" "}
-                                {runningEntry.startedAt.toLocaleString()}
+                                <ClientTime time={runningEntry.startedAt} />
                             </p>
                         )}
                         <p className="text-muted-foreground text-sm">

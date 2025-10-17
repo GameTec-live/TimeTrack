@@ -1,5 +1,5 @@
 "use server";
-import { formatDuration, intervalToDuration } from "date-fns";
+import { intervalToDuration } from "date-fns";
 import { and, desc, eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { db } from "@/lib";
@@ -252,12 +252,27 @@ export async function exportProjectCSVSimple(projectId: string) {
                 `"${entry.userName ?? "Unknown"}"`,
                 entry.startedAt.toLocaleString(),
                 entry.stoppedAt ? entry.stoppedAt.toLocaleString() : "",
-                formatDuration(
-                    intervalToDuration({
+                (() => {
+                    const duration = intervalToDuration({
                         start: entry.startedAt,
                         end: entry.stoppedAt ?? new Date(),
-                    }),
-                ),
+                    });
+
+                    const years = duration.years ?? 0;
+                    const months = duration.months ?? 0;
+                    const weeks = duration.weeks ?? 0;
+                    const days = duration.days ?? 0;
+
+                    const hoursFromLargerUnits =
+                        years * 365 * 24 +
+                        months * 30 * 24 +
+                        weeks * 7 * 24 +
+                        days * 24;
+
+                    const totalHours =
+                        (duration.hours ?? 0) + hoursFromLargerUnits;
+                    return `${String(totalHours).padStart(2, "0")}:${String(duration.minutes ?? 0).padStart(2, "0")}:${String(duration.seconds ?? 0).padStart(2, "0")}`;
+                })(),
                 `"${(entry.note ?? "").replace(/"/g, '""')}"`,
             ].join(";"),
         ),
