@@ -1,0 +1,33 @@
+services:
+  web:
+    container_name: timetrack-web
+    build: .
+    environment:
+      DATABASE_URL: postgres://timetrack_user:securepassword@db:5432/timetrack_db
+      BETTER_AUTH_SECRET: YOURBETTERAUTHSECRET
+      BETTER_AUTH_URL: http://localhost:3000
+      MICROSOFT_CLIENT_ID: MSID
+      MICROSOFT_CLIENT_SECRET: MSSECRET
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    container_name: timetrack-db
+    image: postgres:18
+    environment:
+      POSTGRES_USER: timetrack_user
+      POSTGRES_PASSWORD: securepassword
+      POSTGRES_DB: timetrack_db
+    volumes:
+      - timetrack-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U timetrack_user -d timetrack_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  timetrack-db-data:
